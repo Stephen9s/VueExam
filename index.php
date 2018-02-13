@@ -17,7 +17,7 @@ $html = <<<EOT
 <body>
     <div id="root">
       <app-navbar></app-navbar>
-      <router-view></router-view>
+      <router-view :key="\$route.fullPath"></router-view>
     </div>
     <script src="public/js/app.js"></script>
 </body>

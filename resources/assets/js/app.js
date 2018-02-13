@@ -1,5 +1,6 @@
 require('./bootstrap');
 import Vue from 'vue';
+Vue.config.devtools = true;
 import VueRouter from 'vue-router';
 import AppNavbarComponent from './components/AppNavbarComponent.vue';
 import router from './router';

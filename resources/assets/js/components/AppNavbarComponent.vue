@@ -18,8 +18,8 @@
                 Exams
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <div v-if="exams.length">
-                  <a class="dropdown-item" href="#" v-for="exam in exams">{{ exam.name }}</a>
+                <div v-if="numberOfExams">
+                  <a class="dropdown-item" :href="makeHref(exam.hash)" v-for="exam in exams">{{ exam.name }}</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#" @click.prevent="unloadAllExams">Unload All Exams</a>
                 </div>
@@ -38,11 +38,17 @@
       computed: {
         exams() {
           return this.$store.getters.getAvailableExams;
+        },
+        numberOfExams() {
+          return this.$store.getters.examCount;
         }
       },
       methods: {
         unloadAllExams() {
           this.$store.commit('unloadAllExams');
+        },
+        makeHref(hash) {
+          return "#/exam/" + hash;
         }
       }
     }

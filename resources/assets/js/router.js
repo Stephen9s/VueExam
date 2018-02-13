@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router';
-import ExampleComponent from './components/ExampleComponent.vue';
 import ExamLoaderComponent from './components/ExamLoaderComponent.vue';
+import ExamComponent from './components/ExamComponent.vue';
 
 export default new VueRouter({
     routes: [
@@ -11,6 +11,11 @@ export default new VueRouter({
         {
             path: '/load',
             component: ExamLoaderComponent
+        },
+        {
+            path: '/exam/:examHash',
+            component: ExamComponent,
+            props: true
         }
     ]
 });
