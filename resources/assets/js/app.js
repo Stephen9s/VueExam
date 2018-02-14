@@ -8,6 +8,15 @@ import store from './store'
 window.Vue = Vue;
 Vue.use(VueRouter);
 
+Vue.directive('json-formatted',
+    function (el, binding) {
+        try {
+            let j = JSON.parse(binding.value);
+            el.value = JSON.stringify(j, undefined, 4);
+        } catch(err) {}
+    }
+);
+
 // Create app
 const app = new Vue({
     el: '#root',

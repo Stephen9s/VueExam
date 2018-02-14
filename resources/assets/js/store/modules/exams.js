@@ -22,7 +22,6 @@ export default {
         pushExamToBank (state, exam) {
             let hash = md5(JSON.stringify(exam));
             Vue.set(exam, 'hash', hash);
-            console.log(exam);
             state.bank.push(exam);
         },
         unloadAllExams (state) {

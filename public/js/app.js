@@ -42137,6 +42137,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.config.devtools = true;
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.directive('json-formatted', function (el, binding) {
+    try {
+        var j = JSON.parse(binding.value);
+        el.value = JSON.stringify(j, undefined, 4);
+    } catch (err) {}
+});
+
 // Create app
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#root',
@@ -49374,7 +49381,7 @@ exports = module.exports = __webpack_require__(24)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "\nbutton[data-v-336d3524] {\n  width: 100px;\n}\n", ""]);
 
 // exports
 
@@ -49728,7 +49735,6 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(6);
 //
 //
 //
@@ -49744,13 +49750,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            json: {}
+            json: {},
+            rawJSON: '',
+            valid: false
         };
     },
 
@@ -49768,6 +49796,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return false;
             }
         },
+        validateRawJSON: function validateRawJSON() {
+            this.valid = this.validateJSON(this.rawJSON) != false;
+        },
+        resetRawUpload: function resetRawUpload() {
+            this.rawJSON = '';
+            this.valid = false;
+        },
         resetUpload: function resetUpload() {
             this.json = {};
             this.$refs.upload.value = '';
@@ -49784,9 +49819,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reader.readAsText(file);
         },
         onFileChange: function onFileChange(e) {
-            var files = e.target.files || e.dataTransfer.files;
+            var files = this.$refs.upload.files || this.$refs.upload.dataTransfer.files;
             if (!files.length) return;
             this.load(files[0]);
+        },
+        addRawExam: function addRawExam() {
+            return this.$store.commit('pushExamToBank', JSON.parse(this.rawJSON));
         },
         addExam: function addExam() {
             return this.$store.commit('pushExamToBank', this.json);
@@ -49802,37 +49840,122 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid", staticStyle: { height: "500px" } },
-    [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "exampleTextarea" } }, [
-          _vm._v("Example textarea")
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row mt-2" }, [
+      _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.rawJSON,
+                expression: "rawJSON"
+              },
+              {
+                name: "json-formatted",
+                rawName: "v-json-formatted",
+                value: _vm.rawJSON,
+                expression: "rawJSON"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { rows: "5" },
+            domProps: { value: _vm.rawJSON },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.rawJSON = $event.target.value
+              }
+            }
+          })
         ]),
         _vm._v(" "),
-        _c("pre", { staticClass: "pre-scrollable" }, [
-          _vm._v(_vm._s(_vm._f("prettify")(_vm.json)))
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-2" }, [
+            _c("div", { staticClass: "btn-group" }, [
+              !_vm.valid
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: { click: _vm.validateRawJSON }
+                    },
+                    [_vm._v("Validate")]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: { click: _vm.addRawExam }
+                    },
+                    [_vm._v("Submit")]
+                  ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning",
+                  on: { click: _vm.resetRawUpload }
+                },
+                [_vm._v("Reset")]
+              )
+            ])
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          ref: "upload",
-          attrs: { type: "file", id: "files", name: "files[]" },
-          on: { change: _vm.onFileChange }
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", on: { click: _vm.resetUpload } },
-          [_vm._v("Reset")]
-        )
       ])
-    ]
-  )
+    ]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mt-2" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            ref: "upload",
+            attrs: { type: "file", id: "files", name: "files[]" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-2" }, [
+            _c("div", { staticClass: "btn-group" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: { click: _vm.onFileChange }
+                },
+                [_vm._v("Load")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning",
+                  on: { click: _vm.resetUpload }
+                },
+                [_vm._v("Reset")]
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row mt-2" }, [
+      _c("div", { staticClass: "col-md-2" }, [_c("h3", [_vm._v("OR")])])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -50062,7 +50185,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         pushExamToBank: function pushExamToBank(state, exam) {
             var hash = __WEBPACK_IMPORTED_MODULE_0_md5___default()(JSON.stringify(exam));
             Vue.set(exam, 'hash', hash);
-            console.log(exam);
             state.bank.push(exam);
         },
         unloadAllExams: function unloadAllExams(state) {

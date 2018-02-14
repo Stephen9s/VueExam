@@ -1,25 +1,47 @@
 <template>
-    <div class="container-fluid" style="height:500px;">
-        <!-- <form @submit.prevent="load"> -->
-            <div class="form-group">
-                <label for="exampleTextarea">Example textarea</label>
-                <pre class="pre-scrollable">{{ json | prettify }}</pre>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <textarea class="form-control" rows="5" v-model="rawJSON" v-json-formatted="rawJSON"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" @click="validateRawJSON" v-if="!valid">Validate</button>
+                            <button class="btn btn-success" @click="addRawExam" v-else>Submit</button>
+                            <button class="btn btn-warning" @click="resetRawUpload">Reset</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input ref="upload" type="file" id="files" name="files[]" @change="onFileChange" />
-                <button class="btn btn-primary" @click="resetUpload">Reset</button>
+        </div>
+        <div class="row mt-2"><div class="col-md-2"><h3>OR</h3></div></div>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input ref="upload" type="file" id="files" name="files[]" />                  
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" @click="onFileChange">Load</button>
+                            <button class="btn btn-warning" @click="resetUpload">Reset</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        <!-- </form> -->
+        </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
-
     export default {
         data() {
             return {
-                json: {}
+                json: {},
+                rawJSON: '',
+                valid: false
             }
         },
         filters: {
@@ -36,6 +58,13 @@
                     return false;
                 }
             },
+            validateRawJSON() {
+                this.valid = (this.validateJSON(this.rawJSON) != false);
+            },
+            resetRawUpload() {
+                this.rawJSON = '';
+                this.valid = false;
+            },
             resetUpload() {
                 this.json = {};
                 this.$refs.upload.value = '';
@@ -50,10 +79,13 @@
                 reader.readAsText(file);
             },
             onFileChange(e) {
-                var files = e.target.files || e.dataTransfer.files;
+                var files = this.$refs.upload.files || this.$refs.upload.dataTransfer.files;
                 if (!files.length)
                     return;
                 this.load(files[0]);
+            },
+            addRawExam() {
+                return this.$store.commit('pushExamToBank', JSON.parse(this.rawJSON));
             },
             addExam() {
                 return this.$store.commit('pushExamToBank', this.json);
@@ -63,4 +95,7 @@
 </script>
 
 <style lang="scss" scoped>
+    button {
+        width:100px;
+    }
 </style>
