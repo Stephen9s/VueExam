@@ -49153,9 +49153,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         currentQuestionProps: function currentQuestionProps() {
-            if (this.currentQuestionComponent === 'single-choice-question-component') {
-                return { data: this.currentQuestion, bus: this.bus };
-            }
+            return { data: this.currentQuestion, bus: this.bus };
         }
     },
     mounted: function mounted() {
@@ -49272,7 +49270,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.bus.$emit('nextQuestion');
         },
         checkAnswer: function checkAnswer() {
-            console.log(this);
             if (this.data.answers.includes(this.selectedAnswer)) {
                 this.nextQuestion();
             } else {
@@ -49427,7 +49424,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['data']
+    props: ['data', 'bus'],
+    methods: {
+        nextQuestion: function nextQuestion() {
+            this.bus.$emit('nextQuestion');
+        }
+    },
+    mounted: function mounted() {
+        // insta-skip!
+        // TODO: finish multiple choice component
+        this.nextQuestion();
+    }
 });
 
 /***/ }),

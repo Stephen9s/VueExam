@@ -30,7 +30,6 @@ export default {
             this.bus.$emit('nextQuestion');
         },
         checkAnswer() {
-            console.log(this)
             if (this.data.answers.includes(this.selectedAnswer)) {
                 this.nextQuestion();
             } else {

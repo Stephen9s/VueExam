@@ -43,9 +43,7 @@
         },
         computed: {
             currentQuestionProps: function() {
-                if (this.currentQuestionComponent === 'single-choice-question-component') {
-                    return { data: this.currentQuestion, bus: this.bus };
-                }
+                return { data: this.currentQuestion, bus: this.bus };
             }
         },
         mounted() {

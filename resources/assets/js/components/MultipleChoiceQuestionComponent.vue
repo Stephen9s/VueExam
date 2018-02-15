@@ -6,6 +6,16 @@
 
 <script>
 export default {
-    props: ['data']
+    props: ['data', 'bus'],
+    methods: {
+        nextQuestion() {
+            this.bus.$emit('nextQuestion');
+        }
+    },
+    mounted() {
+        // insta-skip!
+        // TODO: finish multiple choice component
+        this.nextQuestion();
+    }
 }
 </script>
