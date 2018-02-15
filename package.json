@@ -42,6 +42,7 @@
     "vuex": "^3.0.1"
   },
   "dependencies": {
+    "pretty-checkbox": "^3.0.3",
     "vue-sweetalert2": "^1.2.4"
   }
 }

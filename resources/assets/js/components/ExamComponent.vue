@@ -3,9 +3,9 @@
         <div v-if="exam">
             <h1>{{ exam.name }}</h1>
             <hr>
-            <button @click="getNextQuestion">Next Random</button>
-            <p>Question: {{ currentQuestion.question }}</p>
-            <p v-for="(answer, letter) in currentQuestion.answer_bank">{{ letter }}: {{ answer }}</p>
+            <div class="container">
+                <component v-bind:is="currentQuestionComponent" v-bind="currentQuestionProps" :key="currentQuestion.question"></component>
+            </div>
         </div>
         <div v-else>Exam not found.</div>
     </div>
@@ -13,12 +13,21 @@
 
 <script>
     import { randomNoRepeats } from '../utils.js';
+    import SingleChoiceQuestionComponent from './SingleChoiceQuestionComponent.vue';
+    import MultipleChoiceQuestionComponent from './MultipleChoiceQuestionComponent.vue';
+
     export default {
         props: ['examHash'],
+        components: {
+            'single-choice-question-component': SingleChoiceQuestionComponent,
+            'multiple-choice-question-component': MultipleChoiceQuestionComponent
+        },
         data() {
             return {
                 exam: false,
-                currentQuestion: {}
+                currentQuestion: {},
+                currentQuestionComponent: {},
+                bus: new Vue()
             }
         },
         methods: {
@@ -28,6 +37,15 @@
             },
             getNextQuestion() {
                 this.currentQuestion = this.getRandomQuestion();
+                if (this.currentQuestion.multiple === true) this.currentQuestionComponent = 'multiple-choice-question-component';
+                else if (this.currentQuestion.multiple === false) this.currentQuestionComponent = 'single-choice-question-component';
+            }
+        },
+        computed: {
+            currentQuestionProps: function() {
+                if (this.currentQuestionComponent === 'single-choice-question-component') {
+                    return { data: this.currentQuestion, bus: this.bus };
+                }
             }
         },
         mounted() {
@@ -36,7 +54,7 @@
                 this.exam = exam[0];
                 this.getNextQuestion();
             }
-
+            this.bus.$on('nextQuestion', this.getNextQuestion);
         }
     }
 </script>
