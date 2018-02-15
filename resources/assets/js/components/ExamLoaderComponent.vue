@@ -1,37 +1,39 @@
 <template>
     <div class="container-fluid">
-        <div class="row mt-2">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" v-model="rawJSON" v-json-formatted="rawJSON"></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="btn-group">
-                            <button class="btn btn-primary" @click="validateRawJSON" v-if="!valid">Validate</button>
-                            <button class="btn btn-success" @click="addRawExam" v-else>Submit</button>
-                            <button class="btn btn-warning" @click="resetRawUpload">Reset</button>
+        <div class="col-md-6">
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <textarea class="form-control" v-model="rawJSON" v-json-formatted="rawJSON"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="btn-group">
+                                <button class="btn btn-primary" @click="validateRawJSON" v-if="!valid">Validate</button>
+                                <button class="btn btn-success" @click="addRawExam" v-else>Submit</button>
+                                <button class="btn btn-warning" @click="resetRawUpload">Reset</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-2"><div class="col-md-2"><h3>OR</h3></div></div>
-        <div class="row mt-2">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <input ref="upload" type="file" id="files" name="files[]" />                  
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="btn-group">
-                            <button class="btn btn-primary" @click="onFileChange">Load</button>
-                            <button class="btn btn-warning" @click="resetUpload">Reset</button>
+            <div class="row mt-2"><div class="col-md-2"><h3>OR</h3></div></div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input ref="upload" type="file" id="files" name="files[]" />                  
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="btn-group">
+                                <button class="btn btn-primary" @click="onFileChange">Load</button>
+                                <button class="btn btn-warning" @click="resetUpload">Reset</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
 </template>
 
@@ -85,10 +87,30 @@
                 this.load(files[0]);
             },
             addRawExam() {
-                return this.$store.commit('pushExamToBank', JSON.parse(this.rawJSON));
+                this.$store.dispatch('pushExamToBank', JSON.parse(this.rawJSON)).then(response => {
+                    this.$swal({
+                        text: 'Exam loaded!',
+                        type: 'success'
+                    });
+                    this.rawJSON = '';
+                    this.valid = false;
+                }, error => {
+                    this.$swal('Oops...', error, 'error');
+                    this.valid = false;
+                })
             },
             addExam() {
-                return this.$store.commit('pushExamToBank', this.json);
+                this.$store.dispatch('pushExamToBank', this.json).then((response) => {
+                    this.$swal({
+                        text: 'Exam loaded!',
+                        type: 'success'
+                    });
+                    this.json = {};
+                    this.$refs.upload.value = '';
+                }).catch((error) => {
+                    this.$swal('Oops...', error, 'error');
+                    this.$refs.upload.value = '';
+                });
             }
         }
     }

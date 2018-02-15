@@ -45,7 +45,7 @@
       },
       methods: {
         unloadAllExams() {
-          this.$store.commit('unloadAllExams');
+          this.$store.dispatch('unloadAllExams');
         },
         makeHref(hash) {
           return "#/exam/" + hash;

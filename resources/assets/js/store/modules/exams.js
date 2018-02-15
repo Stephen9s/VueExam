@@ -20,8 +20,6 @@ export default {
     },
     mutations: {
         pushExamToBank (state, exam) {
-            let hash = md5(JSON.stringify(exam));
-            Vue.set(exam, 'hash', hash);
             state.bank.push(exam);
         },
         unloadAllExams (state) {
@@ -32,6 +30,24 @@ export default {
         },
         unloadExam (state, examName) {
             //delete state.bank.hash;
+        }
+    },
+    actions: {
+        pushExamToBank ({commit, getters}, exam) {
+            return new Promise((resolve, reject) => {
+                let hash = md5(JSON.stringify(exam));
+                let existingExam = getters.getExamByHash(hash);
+                if (existingExam.length === 0) {
+                    Vue.set(exam, 'hash', hash);
+                    commit('pushExamToBank', exam);
+                    resolve();
+                } else {
+                    reject('Exam already loaded.');
+                }
+            });
+        },
+        unloadAllExams({commit}) {
+            commit('unloadAllExams');
         }
     }
 }
