@@ -1,7 +1,5 @@
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import "~vuetify/dist/vuetify.min.css";
 
-// Bootstrap
-@import "~bootstrap/dist/css/bootstrap.min.css";
-
-@import '~pretty-checkbox/src/pretty-checkbox.scss';
+.pointer {
+    cursor: pointer;
+}

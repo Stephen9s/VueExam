@@ -9,6 +9,8 @@ window.Vue = Vue;
 import VueSweetalert2 from 'vue-sweetalert2'; 
 Vue.use(VueSweetalert2);
 Vue.use(VueRouter);
+import Vuetify from 'vuetify';
+Vue.use(Vuetify);
 
 Vue.directive('json-formatted',
     function (el, binding) {
@@ -21,10 +23,11 @@ Vue.directive('json-formatted',
 
 // Create app
 const app = new Vue({
-    el: '#root',
-    components: {
-        'app-navbar': AppNavbarComponent
-    },
+    el: '#app',
     router,
-    store
+    store,
+    data: () => ({
+        drawer: true,
+        applicationName: 'Vue Exam'
+    })
 });
