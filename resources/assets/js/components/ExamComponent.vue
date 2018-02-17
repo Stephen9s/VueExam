@@ -1,14 +1,18 @@
 <template>
-    <div>
-        <div v-if="exam">
-            <h1>{{ exam.name }}</h1>
-            <hr>
-            <div class="container">
+    <v-container fluid>
+        <v-layout row wrap>
+            <div v-if="exam">
+                <div class="headline">{{ exam.name }}</div>
+                <hr>
                 <component v-bind:is="currentQuestionComponent" v-bind="currentQuestionProps" :key="currentQuestion.question"></component>
+                <v-flex xs12>
+                    <v-btn color="info" @click="checkAnswer">Submit</v-btn>
+                    <v-btn color="warning" @click="getNextQuestion">Skip</v-btn>
+                </v-flex>
             </div>
-        </div>
-        <div v-else>Exam not found.</div>
-    </div>
+            <div class="headline" v-else>Exam not found.</div>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -39,6 +43,9 @@
                 this.currentQuestion = this.getRandomQuestion();
                 if (this.currentQuestion.multiple === true) this.currentQuestionComponent = 'multiple-choice-question-component';
                 else if (this.currentQuestion.multiple === false) this.currentQuestionComponent = 'single-choice-question-component';
+            },
+            checkAnswer() {
+                this.bus.$emit('checkAnswer');
             }
         },
         computed: {

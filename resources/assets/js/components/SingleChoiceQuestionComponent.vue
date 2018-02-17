@@ -1,20 +1,11 @@
 <template>
-    <div>
-        <div class="row">
-            <p class="font-weight-bold">Question:</p>
-            <p>{{ data.question }}</p>
-            <div v-for="(answer, letter) in data.answer_bank" class="pretty p-default col-sm-12 mt-2">
-                <input type="radio" name="b" :value="letter" v-model="selectedAnswer" :checked="selectedAnswer === letter"/>
-                <div class="state p-primary">
-                    <label>{{answer}}</label>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <button type="button" class="btn btn-success" @click="checkAnswer">Submit</button>
-            <button type="button" class="btn btn-danger" @click="nextQuestion">Skip</button>
-        </div>
-    </div>
+    <v-flex xs12 align-center="true" style="height:100%;">
+        <p class="title">Question:</p>
+        <p class="body-1">{{ data.question }}</p>
+        <v-radio-group v-model="selectedAnswer">
+            <v-radio v-for="(answer, letter) in data.answer_bank" :key="letter" :label="`${answer}`" :value="letter"></v-radio>
+        </v-radio-group>
+    </v-flex>
 </template>
 
 <script>
@@ -26,19 +17,17 @@ export default {
         }
     },
     methods: {
-        nextQuestion() {
-            this.bus.$emit('nextQuestion');
-        },
         checkAnswer() {
             if (this.data.answers.includes(this.selectedAnswer)) {
-                this.nextQuestion();
+                this.bus.$emit('nextQuestion');
             } else {
-                this.$swal('Try again!', 'Yes, this is temporary...', 'error');
+                this.$swal('Try again!', 'You have selected the incorrect answer.', 'error');
             }
         }
     },
-    watch: {
-        
+    created() {
+        this.bus.$off('checkAnswer');
+        this.bus.$on('checkAnswer', this.checkAnswer);
     }
 }
 </script>
