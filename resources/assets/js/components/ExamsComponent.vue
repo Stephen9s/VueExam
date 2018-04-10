@@ -23,10 +23,10 @@ export default {
     }),
     methods: {
         generateExamHref(item) {
-            return "#/exam/" + item.hash;
+            return "#/exam/" + item.metadata.hash;
         },
         deleteExam(item) {
-            this.$store.dispatch('unloadExam', item.hash).then(response => {
+            this.$store.dispatch('unloadExam', item.metadata.hash).then(response => {
                 this.$swal({
                     text: response,
                     type: 'success',

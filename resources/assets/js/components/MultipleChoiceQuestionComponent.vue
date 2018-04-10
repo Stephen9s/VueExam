@@ -19,6 +19,7 @@ export default {
             if (_.intersection(this.selectedAnswers, this.data.answers).length == this.data.answers.length) {
                 this.bus.$emit('nextQuestion');
             } else {
+                this.$emit('addIncorrectQuestionHash', this.data.hash);
                 this.$swal('Try again!', 'You have selected the incorrect answer.', 'error');
             }
         }

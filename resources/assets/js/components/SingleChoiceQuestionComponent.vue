@@ -21,6 +21,8 @@ export default {
             if (this.data.answers.includes(this.selectedAnswer)) {
                 this.bus.$emit('nextQuestion');
             } else {
+                console.log(this.data.hash);
+                this.bus.$emit('addIncorrectQuestionHash', this.data.hash);
                 this.$swal('Try again!', 'You have selected the incorrect answer.', 'error');
             }
         }

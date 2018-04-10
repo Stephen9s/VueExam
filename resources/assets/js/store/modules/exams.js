@@ -1,5 +1,6 @@
 import md5 from 'md5';
 import { pick } from 'lodash';
+
 export default {
     state: {
         bank: []
@@ -12,7 +13,7 @@ export default {
             return state.bank.filter(exam => exam.examName === examName);
         },
         getExamByHash: (state) => (hash) => {
-            return state.bank.filter(exam => exam.hash === hash);
+            return state.bank.filter(exam => exam.metadata.hash === hash);
         },
         examCount: (state, getters) => {
             return getters.getAvailableExams.length;
@@ -29,7 +30,7 @@ export default {
             }
         },
         unloadExam (state, hash) {
-            state.bank = _.reject(state.bank, { hash: hash});
+            state.bank = _.reject(state.bank, { metadata: { hash: hash } });
         }
     },
     actions: {
@@ -38,9 +39,15 @@ export default {
                 let hash = md5(JSON.stringify(exam));
                 let existingExam = getters.getExamByHash(hash);
                 if (existingExam.length === 0) {
-                    Vue.set(exam, 'hash', hash);
                     Vue.set(exam, 'metadata', {});
+                    Vue.set(exam.metadata, 'hash', hash);
                     Vue.set(exam.metadata, 'question_count', exam.questions.length);
+
+                    exam.questions.forEach(question => {
+                        let questionHash = md5(question.question);
+                        Vue.set(question, 'hash', questionHash);
+                    });
+
                     commit('pushExamToBank', exam);
                     resolve();
                 } else {

@@ -20,7 +20,7 @@ Vue.directive('json-formatted',
         } catch(err) {}
     }
 );
-
+window.store = store;
 // Create app
 const app = new Vue({
     el: '#app',
