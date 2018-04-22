@@ -1,0 +1,23 @@
+{
+    "name": "sneyens/vue-exam",
+    "description": "Assists IT Professionals with loading custom-designed, JSON-defined exams for CIT Certifications.",
+    "type": "project",
+    "require": {
+        "illuminate/database": "^5.6",
+        "bcosca/fatfree": "^3.6",
+        "jwh315/laravel-capsule-wrapper": "^0.0.1"
+    },
+    "license": "mit",
+    "authors": [
+        {
+            "name": "TheStoof",
+            "email": "neyens.s@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [ "bootstrap/app.php" ]
+    }
+}
