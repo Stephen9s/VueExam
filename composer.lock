@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "1a5cdf302227f9c6242bec1987a95913",
+=======
+    "content-hash": "cb3f3a25b4cefb279eae3a63a61a661e",
+>>>>>>> e2b7b199e0ad178c644258ffd8ac202f8304e980
     "packages": [
         {
             "name": "bcosca/fatfree",
@@ -36,6 +40,7 @@
             "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
             "homepage": "http://fatfreeframework.com/",
             "time": "2018-04-19T17:23:25+00:00"
+<<<<<<< HEAD
         },
         {
             "name": "doctrine/inflector",
@@ -910,6 +915,8 @@
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
             "time": "2018-04-30T01:23:47+00:00"
+=======
+>>>>>>> e2b7b199e0ad178c644258ffd8ac202f8304e980
         }
     ],
     "packages-dev": [],
