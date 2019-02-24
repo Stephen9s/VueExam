@@ -1,67 +1,60 @@
-<?
+<?php
 
-$html = <<<EOT
-<!doctype html>
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @package  Laravel
+ * @author   Taylor Otwell <taylor@laravel.com>
+ */
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+define('LARAVEL_START', microtime(true));
 
-  <title>VueExam</title>
-  <meta name="description" content="Interactive client-side test-taking application.">
-  <meta name="author" content="SitePoint">
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-  <link rel="stylesheet" href="public/css/app.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-</head>
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| our application. We just need to utilize it! We'll simply require it
+| into the script here so that we don't have to worry about manual
+| loading any of our classes later on. It feels great to relax.
+|
+*/
 
-<body>
-    <div id="app">
-        <v-app>
-            <v-navigation-drawer clipped fixed mini-variant v-model="drawer" app>
-              <v-list dense>
-                  <v-list-tile @click="">
-                      <v-list-tile-action>
-                          <v-icon>dashboard</v-icon>
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                          <v-list-tile-title>Dashboard</v-list-tile-title>
-                      </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile href="#/load">
-                      <v-list-tile-action>
-                          <v-icon>file_upload</v-icon>
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                          <v-list-tile-title>Add Exam</v-list-tile-title>
-                      </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile href="#/exams">
-                      <v-list-tile-action>
-                          <v-icon>speaker_notes</v-icon>
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                          <v-list-tile-title>Your Exams</v-list-tile-title>
-                      </v-list-tile-content>
-                  </v-list-tile>
-              </v-list>
-            </v-navigation-drawer>
-            <v-toolbar app fixed clipped-left>
-                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                <v-toolbar-title>{{ applicationName }}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn icon><v-icon>person</v-icon></v-btn>
-            </v-toolbar>
-            <v-content>
-                <v-container fluid>
-                    <router-view :key="\$route.fullPath"></router-view>
-                </v-container>
-            </v-content>
-            <v-footer app fixed><span>&copy; 2018</span></v-footer>
-        </v-app>
-    </div>
-    <script src="public/js/app.js"></script>
-</body>
-</html>
-EOT;
-print $html;
+require __DIR__.'/../vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+|
+| We need to illuminate PHP development, so let us turn on the lights.
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser and delight our users.
+|
+*/
+
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
+
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+
+$response->send();
+
+$kernel->terminate($request, $response);
